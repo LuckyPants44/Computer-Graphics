@@ -26,6 +26,7 @@ namespace Lab4Graphics
             DrawGrid();
         }
 
+        //Рисуем сетку
         private void DrawGrid()
         {
             Graphics gr = Graphics.FromImage(bmp);
@@ -104,93 +105,48 @@ namespace Lab4Graphics
         private void CohenSutherland_Click(object sender, EventArgs e)
         {
             Graphics gr = Graphics.FromImage(bmp);
-            double[] vector = new double[2];
-            bool[] location = new bool[4];
-            double[] currentPoint = new double[2];
             //Screen
             gr.DrawLine(new Pen(Brushes.Red, 4), new Point(0, pictureBox.Height / 2 - screen[0].Y * scale), new Point(pictureBox.Width, pictureBox.Height / 2 - screen[0].Y * scale));
             gr.DrawLine(new Pen(Brushes.Red, 4), new Point(0, pictureBox.Height / 2 - screen[1].Y * scale), new Point(pictureBox.Width, pictureBox.Height / 2 - screen[1].Y * scale));
             gr.DrawLine(new Pen(Brushes.Red, 4), new Point(pictureBox.Width / 2 + screen[0].X * scale, 0), new Point(pictureBox.Width / 2 + screen[0].X * scale, pictureBox.Height));
             gr.DrawLine(new Pen(Brushes.Red, 4), new Point(pictureBox.Width / 2 + screen[1].X * scale, 0), new Point(pictureBox.Width / 2 + screen[1].X * scale, pictureBox.Height));
             //Algorithm
-            DPoint[] r = CohenSutherland_Algorithm(new DPoint(line[0]), new DPoint(line[1]));
-            gr.DrawLine(new Pen(Brushes.Green, 4), new Point(Convert.ToInt32(pictureBox.Width / 2 + line[0].X * scale), Convert.ToInt32(pictureBox.Height / 2 - line[0].Y * scale)), new Point(Convert.ToInt32(pictureBox.Width / 2 + line[1].X * scale), Convert.ToInt32(pictureBox.Height / 2 - line[1].Y * scale)));
-            gr.DrawLine(new Pen(Brushes.Yellow, 4), new Point(Convert.ToInt32(pictureBox.Width / 2 + r[0].X * scale), Convert.ToInt32(pictureBox.Height / 2 - r[0].Y * scale)), new Point(Convert.ToInt32(pictureBox.Width / 2 + r[1].X * scale), Convert.ToInt32(pictureBox.Height / 2 - r[1].Y * scale)));
-            pictureBox.Image = bmp;
-        }
-
-        DPoint[] CohenSutherland_Algorithm(DPoint A, DPoint B)
-        {
-            DPoint[] result = new DPoint[2] { A, B };
-            string[] code = new string[2];
-            bool[,] location = new bool[2, 4];
-            double[] vector = new double[2] { B.X - A.X, B.Y - A.Y };
-            double error = 0.1;
-
-            if ((A.X <= screen[0].X) || (B.X <= screen[0].X))
+            Algorithm alg = new Algorithm();
+            string buf;
+            List<DPoint> p = new List<DPoint>();
+            buf = alg.CohenSutherland(screen, new DPoint(line[0]), new DPoint(line[1]));
+            string[] buf1 = buf.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+            if (buf1.Length == 4)
             {
-                if (A.X <= screen[0].X)
-                    location[0, 3] = true;
-                if (B.X <= screen[0].X)
-                    location[1, 3] = true;
+                p.Add(new DPoint(Convert.ToDouble(buf1[0]), Convert.ToDouble(buf1[1])));
+                p.Add(new DPoint(Convert.ToDouble(buf1[2]), Convert.ToDouble(buf1[3])));
             }
-            if ((A.X >= screen[1].X) || (B.X >= screen[1].X))
-            {
-                if (A.X >= screen[1].X)
-                    location[0, 2] = true;
-                if (B.X >= screen[1].X)
-                    location[1, 2] = true;
-            }
-            if ((A.Y <= screen[0].Y) || (B.Y <= screen[0].Y))
-            {
-                if (A.Y <= screen[0].Y)
-                    location[0, 1] = true;
-                if (B.Y <= screen[0].Y)
-                    location[1, 1] = true;
-            }
-            if ((A.Y >= screen[1].Y) || (B.Y >= screen[1].Y))
-            {
-                if (A.Y >= screen[1].Y)
-                    location[0, 0] = true;
-                if (B.Y >= screen[1].Y)
-                    location[1, 0] = true;
-            }
-
-            for (int t = 0; t < 4; t++)
-            {
-                if ((location[0, t]) && (location[1, t]))    //Если выполнится, то на одной стороне(^)\
-                {
-                    result[0] = A;
-                    result[1] = A;
-                    return result;                           //2
-                }
-                else
-                {
-                    if (location[0, t])
-                        code[0] += 1;
-                    else code[0] += 0;
-
-                    if (location[1, t])
-                        code[1] += 1;
-                    else code[1] += 0;
-                }
-            }
-            if ((code[0] == code[1]) && (code[0] == "0000"))
-                return result;                               //1
             else
             {
-                if (code[0] != "0000")
+                for (int i = 0; i < buf1.Length; i++)
                 {
-                    A.X = A.X + vector[0] * error;
-                    A.Y = A.Y + vector[1] * error;
+                    if (buf1[i].Contains("!!!"))
+                    {
+                        p.Add(new DPoint(Convert.ToDouble(buf1[i - 1]), Convert.ToDouble(buf1[i].Remove(buf1[i].Length - 3, 3))));
+                    }
                 }
-                if (code[1] != "0000")
+                if (p.Count == 1)
                 {
-                    B.X = B.X - vector[0] * error;
-                    B.Y = B.Y - vector[1] * error;
+                    if ((line[0].X >= screen[0].X) && (line[0].X <= screen[1].X) && (line[0].Y >= screen[0].Y) && (line[0].Y <= screen[1].Y))
+                        p.Add(new DPoint(line[0]));
+                    else p.Add(new DPoint(line[1]));
                 }
-                return CohenSutherland_Algorithm(A, B);           //3
             }
+            gr.DrawLine(new Pen(Brushes.Green, 4), new Point(Convert.ToInt32(pictureBox.Width / 2 + line[0].X * scale), Convert.ToInt32(pictureBox.Height / 2 - line[0].Y * scale)), new Point(Convert.ToInt32(pictureBox.Width / 2 + line[1].X * scale), Convert.ToInt32(pictureBox.Height / 2 - line[1].Y * scale)));
+            try
+            {
+                gr.DrawLine(new Pen(Brushes.Yellow, 4), new Point(Convert.ToInt32(pictureBox.Width / 2 + p[0].X * scale), Convert.ToInt32(pictureBox.Height / 2 - p[0].Y * scale)), new Point(Convert.ToInt32(pictureBox.Width / 2 + p[1].X * scale), Convert.ToInt32(pictureBox.Height / 2 - p[1].Y * scale)));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            pictureBox.Image = bmp;
         }
 
         private void CyrusBeck_Click(object sender, EventArgs e)
@@ -201,7 +157,7 @@ namespace Lab4Graphics
             //Reading dots
             try
             {
-                FileStream file = new FileStream("C:\\Users\\1\\Documents\\Visual Studio 2015\\Projects\\Lab4Graphics\\Lab4Graphics\\Points.txt", FileMode.Open);
+                FileStream file = new FileStream("C://Users//1//Desktop//Лабы Быкова//4//Lab4Graphics//Lab4Graphics//Points.txt", FileMode.Open);
                 StreamReader sr = new StreamReader(file);
                 buf = sr.ReadToEnd().Split(' ', '\n', '\r');
                 sr.Close();
@@ -228,70 +184,22 @@ namespace Lab4Graphics
                 pictureBox.Image = bmp;
             }
             //Algorithm
-            DPoint[] result = new DPoint[2];
-            result = CyrusBeck_Algorithm(new DPoint(line[0]), new DPoint(line[1]), points);
+            Algorithm alg = new Algorithm();
+            List<DPoint> result = new List<DPoint>();
+            result = alg.CyrusBeck(new DPoint(line[0]), new DPoint(line[1]), points);
             gr.DrawLine(new Pen(Brushes.Green, 4), new Point(Convert.ToInt32(pictureBox.Width / 2 + line[0].X * scale), Convert.ToInt32(pictureBox.Height / 2 - line[0].Y * scale)), new Point(Convert.ToInt32(pictureBox.Width / 2 + line[1].X * scale), Convert.ToInt32(pictureBox.Height / 2 - line[1].Y * scale)));
-            gr.DrawLine(new Pen(Brushes.Yellow, 4), new Point(Convert.ToInt32(pictureBox.Width / 2 + result[0].X * scale), Convert.ToInt32(pictureBox.Height / 2 - result[0].Y * scale)), new Point(Convert.ToInt32(pictureBox.Width / 2 + result[1].X * scale), Convert.ToInt32(pictureBox.Height / 2 - result[1].Y * scale)));
+
+            if (result.Count > 0)
+            {
+                for (int k = 0; k < result.Count; k++)
+                {
+                    gr.DrawRectangle(new Pen(Brushes.Black, 4), Convert.ToInt32(pictureBox.Width / 2 + result[k].X * scale), Convert.ToInt32(pictureBox.Height / 2 - result[k].Y * scale), 2, 2);
+                }
+            }
+            gr.DrawLine(new Pen(Brushes.Yellow, 4), new Point(Convert.ToInt32(pictureBox.Width / 2 + result[result.Count - 1].X * scale), Convert.ToInt32(pictureBox.Height / 2 - result[result.Count - 1].Y * scale)), new Point(Convert.ToInt32(pictureBox.Width / 2 + result[result.Count - 2].X * scale), Convert.ToInt32(pictureBox.Height / 2 - result[result.Count - 2].Y * scale)));
             pictureBox.Image = bmp;
         }
 
-        DPoint[] CyrusBeck_Algorithm(DPoint A, DPoint B, List<Point> points)
-        {
-            DPoint[] result = new DPoint[2] { new DPoint(), new DPoint() };
-            double[] normal = new double[2];
-            double[] edgeV = new double[2];
-            double[] line = new double[2] { B.X - A.X, B.Y - A.Y };
-            DPoint potential = new DPoint();
-            double step = 0.1;
-            List<double> t = new List<double>();
-            List<DPoint> r = new List<DPoint>();
-            double pt;
-
-            for (int i = 0; i < points.Count; i++)
-            {
-                if (i != points.Count - 1)
-                {
-                    normal[0] = points[i + 1].Y - points[i].Y;
-                    normal[1] = points[i].X - points[i + 1].X;
-                    edgeV[0] = points[i + 1].X - points[i].X;
-                    edgeV[1] = points[i + 1].Y - points[i].Y;
-                }
-                else
-                {
-                    normal[0] = points[0].Y - points[i].Y;
-                    normal[1] = points[i].X - points[0].X;
-                    edgeV[0] = points[0].X - points[i].X;
-                    edgeV[1] = points[0].Y - points[i].Y;
-                }
-                for (int j = 1; j < 1 / step; j++)
-                {
-                    //Перебираем точки лежащие на ребре
-                    potential.X = points[i].X + edgeV[0] * step * j;
-                    potential.Y = points[i].Y + edgeV[1] * step * j;
-
-                    //(E-P0,N)=0
-                    if (((points[i].X - potential.X) * normal[0] + (points[i].Y - potential.Y) * normal[1]) == 0)
-                    {
-                        pt = -(((A.X - potential.X) * normal[0] + (A.Y - potential.Y) * normal[1]) / ((B.X - A.X) * normal[0] + (B.Y - A.Y) * normal[1]));
-                        if ((pt < 1) && (pt > 0))
-                        {
-                            r.Add(new DPoint(A.X + (B.X - A.X) * pt, A.Y + (B.Y - A.Y) * pt));
-                            t.Add(pt);
-                        }
-                    }
-                }
-            }
-            pt = 0;
-            //ВЫБОР НУЖНЫХ ТОЧЕК tmin = вход
-            for (int j = 0; j < t.Count; j++)
-            {
-                if (t.Min() == t[j])
-                    result[0] = r[j];
-                if (t.Max() == t[j])
-                    result[1] = r[j];
-            }
-            return result;
-        }
 
         private void textBoxLineX1_TextChanged(object sender, EventArgs e)
         {
@@ -324,6 +232,13 @@ namespace Lab4Graphics
                 line[1].Y = Convert.ToInt32(textBoxLineY2.Text);
             }
             catch { }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            bmp = new Bitmap(pictureBox.Width, pictureBox.Height);
+            pictureBox.Image = bmp;
+            DrawGrid();
         }
     }
 }

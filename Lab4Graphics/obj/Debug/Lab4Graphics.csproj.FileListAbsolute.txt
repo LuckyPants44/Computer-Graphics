@@ -7,3 +7,12 @@ C:\Users\1\Documents\Visual Studio 2015\Projects\Lab4Graphics\Lab4Graphics\obj\D
 C:\Users\1\Documents\Visual Studio 2015\Projects\Lab4Graphics\Lab4Graphics\obj\Debug\Lab4Graphics.csproj.GenerateResource.Cache
 C:\Users\1\Documents\Visual Studio 2015\Projects\Lab4Graphics\Lab4Graphics\obj\Debug\Lab4Graphics.exe
 C:\Users\1\Documents\Visual Studio 2015\Projects\Lab4Graphics\Lab4Graphics\obj\Debug\Lab4Graphics.pdb
+C:\Users\1\Desktop\Лабы Быкова\4\Lab4Graphics\Lab4Graphics\bin\Debug\Lab4Graphics.exe.config
+C:\Users\1\Desktop\Лабы Быкова\4\Lab4Graphics\Lab4Graphics\obj\Debug\Lab4Graphics.exe
+C:\Users\1\Desktop\Лабы Быкова\4\Lab4Graphics\Lab4Graphics\obj\Debug\Lab4Graphics.pdb
+C:\Users\1\Desktop\Лабы Быкова\4\Lab4Graphics\Lab4Graphics\bin\Debug\Lab4Graphics.exe
+C:\Users\1\Desktop\Лабы Быкова\4\Lab4Graphics\Lab4Graphics\bin\Debug\Lab4Graphics.pdb
+C:\Users\1\Desktop\Лабы Быкова\4\Lab4Graphics\Lab4Graphics\obj\Debug\Lab4Graphics.csprojResolveAssemblyReference.cache
+C:\Users\1\Desktop\Лабы Быкова\4\Lab4Graphics\Lab4Graphics\obj\Debug\Lab4Graphics.Form1.resources
+C:\Users\1\Desktop\Лабы Быкова\4\Lab4Graphics\Lab4Graphics\obj\Debug\Lab4Graphics.Properties.Resources.resources
+C:\Users\1\Desktop\Лабы Быкова\4\Lab4Graphics\Lab4Graphics\obj\Debug\Lab4Graphics.csproj.GenerateResource.Cache

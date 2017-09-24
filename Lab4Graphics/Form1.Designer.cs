@@ -41,6 +41,7 @@
             this.textBoxKSX1 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.CyrusBeck = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -167,11 +168,22 @@
             this.CyrusBeck.UseVisualStyleBackColor = true;
             this.CyrusBeck.Click += new System.EventHandler(this.CyrusBeck_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(12, 308);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(144, 62);
+            this.button1.TabIndex = 13;
+            this.button1.Text = "Очистить:";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1092, 518);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.CyrusBeck);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textBoxKSY2);
@@ -208,6 +220,7 @@
         private System.Windows.Forms.TextBox textBoxKSX1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button CyrusBeck;
+        private System.Windows.Forms.Button button1;
     }
 }
 

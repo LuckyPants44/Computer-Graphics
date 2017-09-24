@@ -29,5 +29,18 @@ namespace Lab4Graphics
             X = p.X;
             Y = p.Y;
         }
+
+        public static bool operator ==(DPoint dp, Point p)
+        {
+            if ((Convert.ToInt32(dp.X) == p.X)&&(Convert.ToInt32(dp.Y) == p.Y))
+                return true;
+            else return false;
+        }
+        public static bool operator !=(DPoint dp, Point p)
+        {
+            if ((Convert.ToInt32(dp.X) != p.X)||(Convert.ToInt32(dp.Y) != p.Y))
+                return true;
+            else return false;
+        }
     }
 }
